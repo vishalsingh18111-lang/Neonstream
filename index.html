@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeonStream</title>
+  <link rel="icon" type="image/png" href="images/neonstream-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <!-- MY LIST MODAL -->
+  <div id="myListModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h2>🎬 My List</h2>
+      <p>Log in to save your list and watch it on any device.</p>
+      <a href="login.html" class="modal-btn">Login Now</a>
+    </div>
+  </div>
+
+  <!-- DOWNLOADS MODAL (Standard & Premium) -->
+  <div class="ns-modal" id="downloadsModal" role="dialog" aria-modal="true" aria-labelledby="downloadsTitle">
+    <div class="modal-box modal-wide">
+      <button class="modal-close" aria-label="Close">✕</button>
+      <h2 id="downloadsTitle">⬇ My Downloads</h2>
+      <p id="downloadsInfo"></p>
+      <ul class="downloads-list" id="downloadsList"></ul>
+    </div>
+  </div>
+
+  <!-- UPGRADE MODAL (shown when a Free / logged-out user taps download) -->
+  <div class="ns-modal" id="upgradeModal" role="dialog" aria-modal="true" aria-labelledby="upgradeTitle">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close">✕</button>
+      <h2 id="upgradeTitle">⬇ Downloads are a paid feature</h2>
+      <p>Upgrade to <b>Standard</b> (download up to 10 titles) or <b>Premium</b> (unlimited downloads) to watch offline.</p>
+      <a href="subscription.html" class="modal-btn">Upgrade Plan</a>
+    </div>
+  </div>
+
+  <!-- LOG OUT CONFIRM -->
+  <div class="ns-modal" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="logoutTitle">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close">✕</button>
+      <h2 id="logoutTitle">Log out of NeonStream?</h2>
+      <p>Your plan and downloads will be removed from this device. You can log in again anytime.</p>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn ghost" id="logoutCancel">Cancel</button>
+        <button type="button" class="modal-btn" id="logoutConfirm">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header>
+    <nav aria-label="Primary">
+      <a href="index.html" class="logo" aria-label="NeonStream home">
+        <img src="images/neonstream-logo.png" class="logo-img" alt="NeonStream logo">
+        <span class="logo-text">NEONSTREAM</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#home" id="navHome">Home</a>
+        <a href="#movies" id="navMovies">Movies</a>
+        <a href="#series" id="navSeries">Series</a>
+        <a href="#anime" id="navAnime">Anime</a>
+        <a href="#trending" id="navTrending">Trending</a>
+      </div>
+
+      <div class="nav-actions">
+        <form class="search-box" role="search">
+          <label class="visually-hidden" for="search-input">Search movies</label>
+          <input id="search-input" type="search" placeholder="Search movies, series, anime..." autocomplete="off" />
+          <button class="search-btn" type="submit" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+          <ul class="search-suggest" id="searchSuggest" role="listbox" aria-label="Search suggestions"></ul>
+        </form>
+
+        <div class="nav-buttons">
+          <button type="button" class="downloads-btn" id="downloadsBtn" hidden>⬇<span class="dl-label"> Downloads</span> <span class="dl-count">0</span></button>
+          <a href="login.html" class="login-btn" id="loginBtn">Login</a>
+
+          <!-- ACCOUNT MENU (shown after login) -->
+          <div class="account" id="accountMenu" hidden>
+            <button type="button" class="account-btn" id="accountBtn" aria-haspopup="true" aria-expanded="false">
+              <span class="avatar" id="accountAvatar">V</span>
+              <span class="account-name" id="accountName">Account</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="account-dropdown" id="accountDropdown" role="menu">
+              <div class="account-info">
+                <strong id="accountEmail">you@example.com</strong>
+                <small id="accountPlan">No plan yet</small>
+              </div>
+              <button type="button" role="menuitem" id="menuDownloads" hidden>⬇ My Downloads</button>
+              <a href="subscription.html" role="menuitem" id="menuPlan">★ Change Plan</a>
+              <button type="button" role="menuitem" class="logout-item" id="menuLogout">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                Log Out
+              </button>
+            </div>
+          </div>
+          <a href="subscription.html" class="subscribe-btn">Subscribe Now</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <img src="images/neonstream-logo.png" class="hero-logo" alt="NeonStream logo">
+        <div class="hero-badge">Now Streaming</div>
+
+        <h1>Virtual Universe</h1>
+        <p>
+          Welcome to a Virtual Universe where imagination meets reality.
+          Discover stories that inspire creativity, awaken emotions,
+          and transform the way we see the real world around us.
+        </p>
+
+        <!-- HERO BUTTONS -->
+        <div class="hero-buttons">
+          <button class="btn btn-watch" id="watchNowBtn">Watch Now</button>
+          <button class="btn btn-trending" id="trendingBtn">Trending</button>
+          <button class="btn btn-mylist" id="myListBtn">My List</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <div class="stats-section reveal">
+      <div class="stat-item">
+        <span data-target="50000" id="stat1">0</span>
+        <p>Movies & Shows</p>
+      </div>
+      <div class="stat-item">
+        <span data-target="12" id="stat2">0</span>
+        <p>Million+ Users</p>
+      </div>
+      <div class="stat-item">
+        <span data-target="4" id="stat3">0</span>
+        <p>K Ultra HD</p>
+      </div>
+      <div class="stat-item">
+        <span data-target="15" id="stat4">0</span>
+        <p>Languages</p>
+      </div>
+    </div>
+
+    <section class="reveal" id="movies">
+      <h2 class="section-title">Trending Movies</h2>
+
+      <!-- GENRE TABS -->
+      <div class="genre-tabs">
+        <button class="genre-tab active" data-genre="all">All</button>
+        <button class="genre-tab" data-genre="sci-fi">Sci-Fi</button>
+        <button class="genre-tab" data-genre="action">Action</button>
+        <button class="genre-tab" data-genre="romance">Romance</button>
+        <button class="genre-tab" data-genre="adventure">Adventure</button>
+      </div>
+
+      <div class="slider-wrap">
+        <button class="slider-arrow arrow-left" id="sliderLeft">‹</button>
+        <div class="movie-row trending-slider" id="trendingSlider">
+
+        <!-- Movie 1 -->
+        <div class="movie-card">
+          <span class="rating">8.9</span>
+          <img src="images/interstellar.jpeg" loading="lazy" alt="Interstellar" />
+          <div class="movie-info">
+            <h3>Interstellar</h3>
+            <div class="movie-bottom">
+              <p>Sci-Fi • Thriller</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie 2 -->
+        <div class="movie-card">
+          <span class="rating">9.2</span>
+          <img src="images/titanic.jpeg" loading="lazy" alt="Titanic" />
+          <div class="movie-info">
+            <h3>Titanic</h3>
+            <div class="movie-bottom">
+              <p>Romance • Drama</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie 3 -->
+        <div class="movie-card">
+          <span class="rating">8.7</span>
+          <img src="images/avengers.jpeg" loading="lazy" alt="Avengers" />
+          <div class="movie-info">
+            <h3>Avengers</h3>
+            <div class="movie-bottom">
+              <p>Action • Superhero</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie 4 -->
+        <div class="movie-card">
+          <span class="rating">9.0</span>
+          <img src="images/spider-man.jpeg" loading="lazy" alt="Spider Man" />
+          <div class="movie-info">
+            <h3>Spider Man</h3>
+            <div class="movie-bottom">
+              <p>Action • Drama</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie 5 -->
+        <div class="movie-card">
+          <span class="rating">9.1</span>
+          <img src="images/inception.jpg" loading="lazy" alt="Inception" />
+          <div class="movie-info">
+            <h3>Inception</h3>
+            <div class="movie-bottom">
+              <p>Sci-Fi • Mystery</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie 6 -->
+        <div class="movie-card">
+          <span class="rating">8.8</span>
+          <img src="images/the-matrix.jpg" loading="lazy" alt="The Matrix" />
+          <div class="movie-info">
+            <h3>The Matrix</h3>
+            <div class="movie-bottom">
+              <p>Action • Sci-Fi</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie 7 -->
+        <div class="movie-card">
+          <span class="rating">9.3</span>
+          <img src="images/avatar.jpg" loading="lazy" alt="Avatar" />
+          <div class="movie-info">
+            <h3>Avatar</h3>
+            <div class="movie-bottom">
+              <p>Adventure • Fantasy</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie 8 -->
+        <div class="movie-card">
+          <span class="rating">8.5</span>
+          <img src="images/jurassic-park.jpg" loading="lazy" alt="Jurassic Park" />
+          <div class="movie-info">
+            <h3>Jurassic Park</h3>
+            <div class="movie-bottom">
+              <p>Adventure • Sci-Fi</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+        <button class="slider-arrow arrow-right" id="sliderRight">›</button>
+      </div>
+    </section>
+
+    <section class="reveal" id="anime">
+      <h2 class="section-title">Anime Collection</h2>
+      <div class="movie-row">
+
+        <div class="movie-card">
+          <span class="rating">9.5</span>
+          <img src="images/naruto.jpeg" loading="lazy" alt="Naruto" />
+          <div class="movie-info">
+            <h3>Naruto</h3>
+            <div class="movie-bottom">
+              <p>Adventure • Anime</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <span class="rating">9.4</span>
+          <img src="images/attack-on-titan.jpeg" loading="lazy" alt="Attack on Titan" />
+          <div class="movie-info">
+            <h3>Attack on Titan</h3>
+            <div class="movie-bottom">
+              <p>Fantasy • Anime</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+   <section class="reveal" id="series">
+      <h2 class="section-title">Series</h2>
+      <div class="movie-row">
+
+        <div class="movie-card">
+          <span class="rating">9.5</span>
+          <img src="images/breaking-bad.jpeg" loading="lazy" alt="Breaking Bad" />
+          <div class="movie-info">
+            <h3>Breaking Bad</h3>
+            <div class="movie-bottom">
+              <p>Crime • Drama</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <span class="rating">9.4</span>
+          <img src="images/game-of-thrones.jpg" loading="lazy" alt="Game of Thrones" />
+          <div class="movie-info">
+            <h3>Game of Thrones</h3>
+            <div class="movie-bottom">
+              <p>Fantasy • Drama</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <section class="reveal" id="continue">
+      <h2 class="section-title">Continue Watching</h2>
+      <div class="movie-row">
+
+        <div class="movie-card">
+          <span class="rating">8.6</span>
+          <img src="images/atonement.jpeg" loading="lazy" alt="Atonement" />
+          <div class="movie-info">
+            <h3>Atonement</h3>
+            <div class="movie-bottom">
+              <p>Thriller • Romance</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <span class="rating">8.4</span>
+          <img src="images/demon-slayer.jpg" loading="lazy" alt="Demon Slayer" />
+          <div class="movie-info">
+            <h3>Demon Slayer</h3>
+            <div class="movie-bottom">
+              <p>Dark • Fantasy</p>
+              <button class="play-btn">▶ PLAY</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-logo">
+      <a href="index.html" class="logo logo-lg" aria-label="NeonStream home">
+        <img src="images/neonstream-logo.png" class="logo-img" alt="NeonStream logo">
+        <span class="logo-text">NEONSTREAM</span>
+      </a>
+    </div>
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">YouTube</a>
+      <a href="#">Twitter</a>
+      <a href="#">Discord</a>
+    </div>
+    <p>&copy; 2026 NeonStream. All Rights Reserved.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

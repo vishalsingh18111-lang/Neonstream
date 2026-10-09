@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | NeonStream</title>
+  <link rel="icon" type="image/png" href="images/neonstream-logo.png">
+  <link rel="stylesheet" href="css/payment.css">
+</head>
+<body>
+
+  <!-- TOAST -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="index.html" class="logo" aria-label="NeonStream home">
+      <img src="images/neonstream-logo.png" class="logo-img" alt="NeonStream logo">
+      <span class="logo-text">NEONSTREAM</span>
+    </a>
+    <a href="login.html" class="nav-link" id="navSignIn">Sign In</a>
+  </nav>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress" aria-hidden="true">
+    <div class="progress-step done" data-step="1"><span>1</span>Plan</div>
+    <div class="progress-line"></div>
+    <div class="progress-step" data-step="2"><span>2</span>Account</div>
+    <div class="progress-line"></div>
+    <div class="progress-step" data-step="3"><span>3</span>Payment</div>
+  </div>
+
+  <main class="checkout">
+
+    <!-- ════════════ LEFT: STEPS ════════════ -->
+    <div class="steps">
+
+      <!-- ───── STEP 2: CREATE ACCOUNT ───── -->
+      <section class="step active" id="stepAccount">
+        <p class="step-label">Step <b>2</b> of <b>3</b></p>
+        <h1>Create a password to start your membership</h1>
+        <p class="lead">Just a few more steps and you're done! We hate paperwork, too.</p>
+
+        <form id="accountForm" novalidate>
+          <div class="field">
+            <label for="accEmail">Email address</label>
+            <input type="email" id="accEmail" placeholder="you@example.com" autocomplete="email">
+            <small class="err" id="accEmailErr">Please enter a valid email address.</small>
+          </div>
+
+          <div class="field">
+            <label for="accPhone">Mobile number</label>
+            <div class="input-group">
+              <span class="prefix">+91</span>
+              <input type="tel" id="accPhone" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric" autocomplete="tel-national">
+            </div>
+            <small class="err" id="accPhoneErr">Please enter a valid 10-digit mobile number.</small>
+          </div>
+
+          <div class="field">
+            <label for="accPass">Create password</label>
+            <div class="input-group">
+              <input type="password" id="accPass" placeholder="At least 6 characters" autocomplete="new-password">
+              <button type="button" class="eye" data-target="accPass" aria-label="Show password">👁</button>
+            </div>
+            <small class="err" id="accPassErr">Password must be at least 6 characters long.</small>
+          </div>
+
+          <label class="check">
+            <input type="checkbox" id="accOffers">
+            <span>Please do not email me NeonStream special offers.</span>
+          </label>
+
+          <button type="submit" class="primary-btn" id="accountNext">Next</button>
+        </form>
+      </section>
+
+      <!-- ───── STEP 3: CHOOSE PAYMENT METHOD ───── -->
+      <section class="step" id="stepMethod">
+        <button class="link-back" data-go="stepAccount">‹ Back</button>
+        <p class="step-label">Step <b>3</b> of <b>3</b></p>
+        <h1>Choose how to pay</h1>
+        <p class="lead">Your payment is encrypted and you can change how you pay anytime.</p>
+        <p class="secure-line">🔒 Secure for peace of mind. Cancel easily online.</p>
+
+        <div class="methods">
+          <button class="method" data-method="card">
+            <div class="method-text">
+              <strong>Credit or Debit Card</strong>
+              <div class="brands">
+                <span class="brand visa">VISA</span>
+                <span class="brand mc"><i></i><i></i></span>
+                <span class="brand rupay">RuPay</span>
+                <span class="brand amex">AMEX</span>
+              </div>
+            </div>
+            <span class="chev">›</span>
+          </button>
+
+          <button class="method" data-method="upi">
+            <div class="method-text">
+              <strong>UPI AutoPay</strong>
+              <div class="brands">
+                <span class="brand pill">Google Pay</span>
+                <span class="brand pill">PhonePe</span>
+                <span class="brand pill">Paytm</span>
+                <span class="brand pill">BHIM</span>
+              </div>
+            </div>
+            <span class="chev">›</span>
+          </button>
+
+          <button class="method" data-method="netbanking">
+            <div class="method-text">
+              <strong>Net Banking</strong>
+              <small>All major Indian banks supported</small>
+            </div>
+            <span class="chev">›</span>
+          </button>
+
+          <button class="method" data-method="wallet">
+            <div class="method-text">
+              <strong>Wallets</strong>
+              <small>Paytm, PhonePe, Amazon Pay, MobiKwik</small>
+            </div>
+            <span class="chev">›</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ───── STEP 3b: PAYMENT DETAILS ───── -->
+      <section class="step" id="stepDetails">
+        <button class="link-back" data-go="stepMethod">‹ Back to payment options</button>
+        <p class="step-label">Step <b>3</b> of <b>3</b></p>
+        <h1 id="detailsTitle">Set up your credit or debit card</h1>
+
+        <!-- CARD -->
+        <form class="pay-form" id="formCard" data-method="card" novalidate>
+          <!-- Live card preview -->
+          <div class="card-preview" id="cardPreview">
+            <div class="card-face card-front">
+              <div class="card-top">
+                <div class="chip"></div>
+                <span class="card-brand" id="pvBrand"></span>
+              </div>
+              <div class="card-number" id="pvNumber">•••• •••• •••• ••••</div>
+              <div class="card-bottom">
+                <div>
+                  <small>Card holder</small>
+                  <span id="pvName">YOUR NAME</span>
+                </div>
+                <div>
+                  <small>Expires</small>
+                  <span id="pvExpiry">MM/YY</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="stripe"></div>
+              <div class="cvv-strip"><span id="pvCvv">•••</span></div>
+              <small class="back-note">NeonStream secure card</small>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="cardNumber">Card number</label>
+            <div class="input-group">
+              <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" inputmode="numeric" autocomplete="cc-number" maxlength="19">
+              <span class="suffix" id="cardBrandTag"></span>
+            </div>
+            <small class="err" id="cardNumberErr">Please enter a valid card number.</small>
+          </div>
+
+          <div class="field">
+            <label for="cardName">Name on card</label>
+            <input type="text" id="cardName" placeholder="As printed on the card" autocomplete="cc-name">
+            <small class="err" id="cardNameErr">Please enter the name on your card.</small>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="cardExpiry">Expiry date</label>
+              <input type="text" id="cardExpiry" placeholder="MM/YY" inputmode="numeric" autocomplete="cc-exp" maxlength="5">
+              <small class="err" id="cardExpiryErr">Please enter a valid expiry date.</small>
+            </div>
+            <div class="field">
+              <label for="cardCvv">CVV</label>
+              <input type="password" id="cardCvv" placeholder="123" inputmode="numeric" autocomplete="cc-csc" maxlength="4">
+              <small class="err" id="cardCvvErr">Please enter a valid CVV.</small>
+            </div>
+          </div>
+        </form>
+
+        <!-- UPI -->
+        <form class="pay-form" id="formUpi" data-method="upi" novalidate>
+          <p class="sub-label">Pay with a UPI app</p>
+          <div class="chips" id="upiApps">
+            <button type="button" class="chip-btn" data-suffix="okaxis">Google Pay</button>
+            <button type="button" class="chip-btn" data-suffix="ybl">PhonePe</button>
+            <button type="button" class="chip-btn" data-suffix="paytm">Paytm</button>
+            <button type="button" class="chip-btn" data-suffix="upi">BHIM</button>
+          </div>
+
+          <div class="or"><span>or enter your UPI ID</span></div>
+
+          <div class="field">
+            <label for="upiId">UPI ID</label>
+            <div class="input-group">
+              <input type="text" id="upiId" placeholder="yourname@bank" autocomplete="off">
+              <button type="button" class="verify-btn" id="upiVerify">Verify</button>
+            </div>
+            <small class="err" id="upiIdErr">Please enter a valid UPI ID (e.g. name@okaxis).</small>
+            <small class="ok" id="upiIdOk">✔ UPI ID verified</small>
+          </div>
+          <p class="note">You'll get a request in your UPI app to approve the AutoPay mandate.</p>
+        </form>
+
+        <!-- NET BANKING -->
+        <form class="pay-form" id="formNetbanking" data-method="netbanking" novalidate>
+          <p class="sub-label">Popular banks</p>
+          <div class="banks" id="bankTiles">
+            <button type="button" class="bank" data-bank="State Bank of India"><b>SBI</b>State Bank</button>
+            <button type="button" class="bank" data-bank="HDFC Bank"><b>HDFC</b>HDFC Bank</button>
+            <button type="button" class="bank" data-bank="ICICI Bank"><b>ICICI</b>ICICI Bank</button>
+            <button type="button" class="bank" data-bank="Axis Bank"><b>AXIS</b>Axis Bank</button>
+            <button type="button" class="bank" data-bank="Kotak Mahindra Bank"><b>KOTAK</b>Kotak Bank</button>
+            <button type="button" class="bank" data-bank="Punjab National Bank"><b>PNB</b>PNB</button>
+          </div>
+          <div class="field">
+            <label for="bankSelect">Other banks</label>
+            <select id="bankSelect">
+              <option value="">Select your bank</option>
+              <option>Bank of Baroda</option>
+              <option>Canara Bank</option>
+              <option>Union Bank of India</option>
+              <option>IndusInd Bank</option>
+              <option>Yes Bank</option>
+              <option>IDFC FIRST Bank</option>
+              <option>Federal Bank</option>
+              <option>Bank of India</option>
+            </select>
+            <small class="err" id="bankErr">Please choose your bank.</small>
+          </div>
+          <p class="note">You'll be redirected to your bank's website to log in and approve the payment.</p>
+        </form>
+
+        <!-- WALLET -->
+        <form class="pay-form" id="formWallet" data-method="wallet" novalidate>
+          <div class="wallets" id="walletList">
+            <label class="wallet"><input type="radio" name="wallet" value="Paytm Wallet"><span>Paytm Wallet</span></label>
+            <label class="wallet"><input type="radio" name="wallet" value="PhonePe Wallet"><span>PhonePe Wallet</span></label>
+            <label class="wallet"><input type="radio" name="wallet" value="Amazon Pay"><span>Amazon Pay</span></label>
+            <label class="wallet"><input type="radio" name="wallet" value="MobiKwik"><span>MobiKwik</span></label>
+          </div>
+          <small class="err" id="walletErr">Please choose a wallet.</small>
+        </form>
+
+        <!-- Shown for every method -->
+        <div class="confirm-box">
+          <div class="confirm-plan">
+            <div>
+              <strong id="confirmPrice">₹299/month</strong>
+              <span id="confirmPlan">Standard</span>
+            </div>
+            <a href="subscription.html" id="changePlan2">Change</a>
+          </div>
+
+          <p class="fine">
+            Your payments will be processed automatically. By checking the box below, you agree that
+            your NeonStream membership will continue and we will charge the
+            <span id="fineCycle">monthly</span> fee to your payment method until you cancel.
+            You may cancel at any time to avoid future charges. No refunds or credits for partial periods.
+          </p>
+
+          <label class="check">
+            <input type="checkbox" id="agree">
+            <span>I agree to the Terms of Use and Privacy Statement.</span>
+          </label>
+          <small class="err" id="agreeErr">Please accept the terms to continue.</small>
+
+          <button class="primary-btn" id="payBtn">Start Membership</button>
+
+          <p class="demo-note">
+            🔒 Demo checkout — no real payment is taken and details never leave this page.
+            Test card: <b>4242 4242 4242 4242</b>, any future date, any CVV.
+          </p>
+        </div>
+      </section>
+
+      <!-- ───── SUCCESS ───── -->
+      <section class="step" id="stepSuccess">
+        <div class="success">
+          <div class="tick">
+            <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
+          </div>
+          <h1>Welcome to NeonStream!</h1>
+          <p class="lead" id="successLead">Your membership is active. Enjoy unlimited movies, series and anime.</p>
+
+          <div class="receipt">
+            <div><span>Plan</span><b id="rcPlan">Standard</b></div>
+            <div><span>Amount paid</span><b id="rcAmount">₹299</b></div>
+            <div><span>Payment method</span><b id="rcMethod">Visa •••• 4242</b></div>
+            <div><span>Order ID</span><b id="rcOrder">NS-000000</b></div>
+            <div><span>Email</span><b id="rcEmail">you@example.com</b></div>
+            <div><span>Next billing date</span><b id="rcNext">—</b></div>
+          </div>
+
+          <a href="index.html" class="primary-btn as-link">Start Watching</a>
+          <p class="fine center">A confirmation has been sent to your email.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ════════════ RIGHT: ORDER SUMMARY ════════════ -->
+    <aside class="summary" id="summary">
+      <div class="summary-head">
+        <h2>Your plan</h2>
+        <a href="subscription.html" id="changePlan">Change</a>
+      </div>
+
+      <div class="plan-badge" id="sumBadge">POPULAR</div>
+      <h3 id="sumName">Standard</h3>
+
+      <ul class="sum-features" id="sumFeatures"></ul>
+
+      <div class="sum-lines">
+        <div><span>Billing</span><b id="sumBilling">Monthly</b></div>
+        <div><span>Price</span><b id="sumPrice">₹299/month</b></div>
+        <div class="saving" id="sumSavingRow"><span>You save</span><b id="sumSaving">₹720/year</b></div>
+      </div>
+
+      <div class="sum-total">
+        <span>Total due today</span>
+        <b id="sumTotal">₹299</b>
+      </div>
+      <p class="fine">Inclusive of all taxes. Cancel anytime.</p>
+    </aside>
+  </main>
+
+  <!-- ═══ PROCESSING OVERLAY ═══ -->
+  <div class="overlay" id="processing">
+    <div class="overlay-box">
+      <div class="loader"></div>
+      <h3 id="processingTitle">Processing your payment…</h3>
+      <p id="processingText">Please don't close or refresh this page.</p>
+    </div>
+  </div>
+
+  <!-- ═══ OTP MODAL (cards) ═══ -->
+  <div class="overlay" id="otpModal">
+    <div class="overlay-box otp-box">
+      <p class="bank-tag">🔐 Secure verification</p>
+      <h3>Enter OTP</h3>
+      <p>We've sent a 6-digit code to your mobile number ending in <b id="otpPhone">0000</b>.</p>
+      <div class="otp-inputs" id="otpInputs">
+        <input maxlength="1" inputmode="numeric" aria-label="OTP digit 1">
+        <input maxlength="1" inputmode="numeric" aria-label="OTP digit 2">
+        <input maxlength="1" inputmode="numeric" aria-label="OTP digit 3">
+        <input maxlength="1" inputmode="numeric" aria-label="OTP digit 4">
+        <input maxlength="1" inputmode="numeric" aria-label="OTP digit 5">
+        <input maxlength="1" inputmode="numeric" aria-label="OTP digit 6">
+      </div>
+      <small class="err" id="otpErr">Please enter the 6-digit OTP.</small>
+      <button class="primary-btn" id="otpSubmit">Verify &amp; Pay</button>
+      <div class="otp-foot">
+        <button class="text-btn" id="otpResend" disabled>Resend OTP in <span id="otpTimer">30</span>s</button>
+        <button class="text-btn" id="otpCancel">Cancel</button>
+      </div>
+      <p class="demo-note">Demo: enter any 6 digits.</p>
+    </div>
+  </div>
+
+  <!-- ═══ UPI WAITING MODAL ═══ -->
+  <div class="overlay" id="upiModal">
+    <div class="overlay-box">
+      <div class="loader"></div>
+      <h3>Approve the request in your UPI app</h3>
+      <p>A payment request has been sent to <b id="upiTarget">name@bank</b>.</p>
+      <p class="timer">Request expires in <b id="upiTimer">05:00</b></p>
+      <button class="text-btn" id="upiCancel">Cancel</button>
+    </div>
+  </div>
+
+  <script src="js/payment.js"></script>
+</body>
+</html>

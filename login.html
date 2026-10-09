@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | NeonStream</title>
+  <link rel="icon" type="image/png" href="images/neonstream-logo.png">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+<!-- FLOATING PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="index.html" class="logo">
+    <img src="images/neonstream-logo.png" class="logo-img" alt="NeonStream logo">
+    <span class="logo-text">NEONSTREAM</span>
+  </a>
+  <a href="index.html" class="back-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back to Home</a>
+</nav>
+
+<!-- LOGIN CARD -->
+<div class="login-container" id="loginCard">
+
+  <!-- LOGO INSIDE CARD -->
+  <a href="index.html" class="card-logo">
+    <img src="images/neonstream-logo.png" class="card-logo-img" alt="NeonStream logo">
+    <span class="card-logo-text">NEONSTREAM</span>
+  </a>
+
+  <!-- LIVE BADGE -->
+  <div class="welcome-badge">
+    <div class="badge-dot"></div>
+    <span class="badge-text">Secure Login</span>
+  </div>
+
+  <p class="subtitle">
+    Login to continue watching Movies,<br>
+    Anime &amp; Premium Content
+  </p>
+
+  <!-- EMAIL INPUT -->
+  <div class="input-box">
+    <label for="emailInput">Email or Mobile Number</label>
+    <div class="input-wrap">
+      <input type="text" id="emailInput" placeholder="Enter email or mobile number" autocomplete="email">
+      <span class="input-icon" id="emailStatus"></span>
+    </div>
+    <div class="error-msg" id="emailError">Please enter a valid email or 10-digit mobile number.</div>
+  </div>
+
+  <!-- PASSWORD INPUT -->
+  <div class="input-box">
+    <label for="passwordInput">Password</label>
+    <div class="input-wrap">
+      <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="current-password">
+      <button class="input-icon" id="eyeToggle" type="button" aria-label="Toggle password">👁</button>
+    </div>
+    <div class="strength-wrap" id="strengthWrap" style="display:none">
+      <div class="strength-bar-bg">
+        <div class="strength-bar" id="strengthBar"></div>
+      </div>
+      <div class="strength-row">
+        <span class="strength-label" id="strengthLabel"></span>
+        <span class="strength-hint" id="strengthHint"></span>
+      </div>
+    </div>
+    <div class="error-msg" id="passError">Password must be at least 6 characters long.</div>
+  </div>
+
+  <!-- LOGIN BUTTON -->
+  <button class="login-main-btn" id="loginBtn" type="button">Login</button>
+
+  <!-- FORGOT -->
+  <div class="extra-options">
+    Forgot Password? <a href="#" id="forgotLink">Reset</a>
+  </div>
+
+  <div class="divider"><span>Or Continue With</span></div>
+
+  <!-- SOCIAL BUTTONS WITH REAL ICONS -->
+  <div class="social-buttons">
+    <button class="social-btn" id="googleBtn" type="button">
+      <img src="images/google.png" alt="Google">
+      <span>Google</span>
+    </button>
+    <button class="social-btn" id="appleBtn" type="button">
+      <img src="images/apple.png" alt="Apple">
+      <span>Apple</span>
+    </button>
+  </div>
+
+  <div class="signup-link">
+    New to NeonStream? <a href="subscription.html">Subscribe Now</a>
+  </div>
+
+</div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>
